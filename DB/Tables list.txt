@@ -1,0 +1,105 @@
+CREATE TABLE Customers (
+    CustomerID INT PRIMARY KEY IDENTITY(1,1),
+    FirstName VARCHAR(50),
+    LastName VARCHAR(50),
+    Email VARCHAR(100),
+    Phone VARCHAR(15)
+);
+
+CREATE TABLE Roles (
+    RoleID INT PRIMARY KEY IDENTITY(1,1),
+    RoleName VARCHAR(50)
+);
+
+CREATE TABLE Employees (
+    EmployeeID INT PRIMARY KEY IDENTITY(1,1),
+    FirstName VARCHAR(50),
+    LastName VARCHAR(50),
+    RoleID INT,
+    Email VARCHAR(100),
+    Phone VARCHAR(15),
+    FOREIGN KEY (RoleID) REFERENCES Roles(RoleID)
+);
+
+CREATE TABLE Menus (
+    MenuItemID INT PRIMARY KEY IDENTITY(1,1),
+    Name VARCHAR(100),
+    Description TEXT,
+    Price DECIMAL(10, 2),
+    Category VARCHAR(50)
+);
+
+CREATE TABLE Orders (
+    OrderID INT PRIMARY KEY IDENTITY(1,1),
+    CustomerID INT,
+    OrderDate DATETIME,
+    Status VARCHAR(50),
+    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
+);
+
+CREATE TABLE Order_Items (
+    OrderItemID INT PRIMARY KEY IDENTITY(1,1),
+    OrderID INT,
+    MenuItemID INT,
+    Quantity INT,
+    Price DECIMAL(10, 2),
+    FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
+    FOREIGN KEY (MenuItemID) REFERENCES Menus(MenuItemID)
+);
+
+CREATE TABLE Inventory (
+    ItemID INT PRIMARY KEY IDENTITY(1,1),
+    ItemName VARCHAR(100),
+    Quantity INT,
+    SupplierID INT
+);
+
+CREATE TABLE Suppliers (
+    SupplierID INT PRIMARY KEY IDENTITY(1,1),
+    SupplierName VARCHAR(100),
+    ContactName VARCHAR(100),
+    ContactPhone VARCHAR(15)
+);
+
+CREATE TABLE Reservations (
+    ReservationID INT PRIMARY KEY IDENTITY(1,1),
+    CustomerID INT,
+    ReservationDate DATETIME,
+    NumberOfPeople INT,
+    TableNumber INT,
+    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
+);
+
+CREATE TABLE Tables (
+    TableNumber INT PRIMARY KEY,
+    SeatingCapacity INT,
+    IsAvailable BIT
+);
+
+CREATE TABLE Payments (
+    PaymentID INT PRIMARY KEY IDENTITY(1,1),
+    OrderID INT,
+    PaymentMethod VARCHAR(50),
+    Amount DECIMAL(10, 2),
+    PaymentDate DATETIME,
+    FOREIGN KEY (OrderID) REFERENCES Orders(OrderID)
+);
+
+CREATE TABLE Brewing_Batches (
+    BatchID INT PRIMARY KEY IDENTITY(1,1),
+    BrewDate DATE,
+    BeerType VARCHAR(50),
+    Ingredients TEXT,
+    Status VARCHAR(50)
+);
+
+CREATE TABLE Reviews (
+    ReviewID INT PRIMARY KEY IDENTITY(1,1),
+    CustomerID INT,
+    OrderID INT,
+    Rating INT,
+    Comments TEXT,
+    ReviewDate DATE,
+    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID),
+    FOREIGN KEY (OrderID) REFERENCES Orders(OrderID)
+);
